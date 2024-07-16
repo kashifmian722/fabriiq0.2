@@ -50,7 +50,7 @@ Paste this script at the bottom of your HTML before the </body> tag.
 <script
   data-embed-id="${embed.uuid}"
   data-base-api-url="${serverHost}/api/embed"
-  src="${scriptHost}/embed/FabriiQ-chat-widget.min.js">
+  src="${scriptHost}/embed/fabriiq-chat-widget.min.js">
 </script>
 <!-- FabriiQ (https://fabriiq.com) -->
 `;
@@ -85,13 +85,13 @@ const ScriptTag = ({ embed }) => {
           Have your workspace chat embed function like a help desk chat bottom
           in the corner of your website.
         </p>
-        <a
+      {/*  <a
           href="https://github.com/Mintplex-Labs/anything-llm/tree/master/embed/README.md"
           target="_blank"
           className="text-blue-300 hover:underline"
         >
           View all style and configuration options &rarr;
-        </a>
+        </a> */}
       </div>
       <button
         disabled={copied}
