@@ -8,6 +8,7 @@ import System from "@/models/system";
 export default function ApiKeyRow({ apiKey }) {
   const rowRef = useRef(null);
   const [copied, setCopied] = useState(false);
+
   const handleDelete = async () => {
     if (
       !window.confirm(
@@ -42,6 +43,12 @@ export default function ApiKeyRow({ apiKey }) {
     resetStatus();
   }, [copied]);
 
+  // Function to mask the API key
+  const maskApiKey = (key) => {
+    if (!key) return "";
+    return key.slice(0, 3) + "************";
+  };
+
   return (
     <>
       <tr
@@ -49,7 +56,7 @@ export default function ApiKeyRow({ apiKey }) {
         className="bg-transparent text-white text-opacity-80 text-sm font-medium"
       >
         <td scope="row" className="px-6 py-4 whitespace-nowrap">
-          {apiKey.secret}
+          {maskApiKey(apiKey.secret)}
         </td>
         <td className="px-6 py-4 text-center">
           {apiKey.createdBy?.username || "--"}
