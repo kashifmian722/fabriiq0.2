@@ -174,6 +174,29 @@ class LocalWhisper {
       return { content: null, error: error.message };
     }
   }
+
+  async ttsBuffer(textInput, voiceSettings) {
+    const { gender, age, accent, accentStrength } = voiceSettings;
+    const voiceModel = this.getVoiceModel(gender, age, accent, accentStrength);
+
+    try {
+      const result = await this.openai.audio.speech.create({
+        model: "tts-1",
+        voice: voiceModel,
+        input: textInput,
+      });
+      return Buffer.from(await result.arrayBuffer());
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  }
+
+  getVoiceModel(gender, age, accent, accentStrength) {
+    // Logic to determine the voice model based on the settings
+    // This is a placeholder. Replace with actual logic.
+    return `${gender}-${age}-${accent}-${accentStrength}`;
+  }
 }
 
 module.exports = {

@@ -23,6 +23,7 @@ import Members from "./Members";
 import WorkspaceAgentConfiguration from "./AgentConfig";
 import useUser from "@/hooks/useUser";
 import { useTranslation } from "react-i18next";
+import AvatarSettings from "./AvatarSettings"; // Import AvatarSettings
 
 const TABS = {
   "general-appearance": GeneralAppearance,
@@ -30,6 +31,7 @@ const TABS = {
   "vector-database": VectorDatabase,
   members: Members,
   "agent-config": WorkspaceAgentConfiguration,
+  avatar: AvatarSettings, // Add AvatarSettings to TABS
 };
 
 export default function WorkspaceSettings() {
@@ -111,6 +113,11 @@ function ShowWorkspaceChat() {
             title={t("workspaces—settings.agent")}
             icon={<Robot className="h-6 w-6" />}
             to={paths.workspace.settings.agentConfig(slug)}
+          />
+          <TabItem
+            title={t("workspaces—settings.avatar")} // Add Avatar Settings TabItem
+            icon={<User className="h-6 w-6" />}
+            to={paths.workspace.settings.avatar(slug)}
           />
         </div>
         <div className="px-16 py-6">
