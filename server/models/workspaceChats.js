@@ -51,7 +51,28 @@ const WorkspaceChats = {
       return [];
     }
   },
+// Existing methods...
 
+  countByWorkspace: async function () {
+    try {
+      const results = await prisma.$queryRaw(`
+        SELECT wc.workspace_id, w.slug, COUNT(*) as chat_count
+        FROM workspace_chats wc
+        JOIN workspaces w ON wc.workspace_id = w.id
+        GROUP BY wc.workspace_id, w.slug
+      `);
+      return results.map(row => ({
+        workspaceId: row.workspace_id,
+        slug: row.slug,
+        chatCount: row.chat_count
+      }));
+    } catch (error) {
+      console.error(error.message);
+      return [];
+    }
+  },
+
+  // Existing methods...
   forWorkspace: async function (
     workspaceId = null,
     limit = null,
