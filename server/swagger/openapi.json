@@ -50,6 +50,56 @@
         }
       }
     },
+    "paths": {
+    "/v1/workspace/chats/count": {
+      "get": {
+        "tags": ["Workspaces"],
+        "description": "Get total number of chats and workspace-wise chat count",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalChats": {
+                      "type": "integer",
+                      "example": 100
+                    },
+                    "workspaceChatCounts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "workspaceId": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "slug": {
+                            "type": "string",
+                            "example": "workspace-1"
+                          },
+                          "chatCount": {
+                            "type": "integer",
+                            "example": 50
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/InvalidAPIKey"
+          }
+        }
+      }
+    }
+  }
+}
     "/v1/admin/is-multi-user-mode": {
       "get": {
         "tags": [
