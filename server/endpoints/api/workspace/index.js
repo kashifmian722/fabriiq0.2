@@ -739,6 +739,48 @@ function apiWorkspaceEndpoints(app) {
       }
     }
   );
+ // Existing endpoints...
+
+  app.get("/v1/workspace/chats/count", [validApiKey], async (request, response) => {
+    /*
+    #swagger.tags = ['Workspaces']
+    #swagger.description = 'Get total number of chats and workspace-wise chat count'
+    #swagger.responses[200] = {
+      content: {
+        "application/json": {
+          schema: {
+            type: 'object',
+            example: {
+              totalChats: 100,
+              workspaceChatCounts: [
+                { workspaceId: 1, slug: "workspace-1", chatCount: 50 },
+                { workspaceId: 2, slug: "workspace-2", chatCount: 30 },
+                { workspaceId: 3, slug: "workspace-3", chatCount: 20 }
+              ]
+            }
+          }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      schema: {
+        "$ref": "#/definitions/InvalidAPIKey"
+      }
+    }
+    */
+    try {
+      const totalChats = await WorkspaceChats.count();
+      const workspaceChatCounts = await WorkspaceChats.countByWorkspace();
+
+      response.status(200).json({ totalChats, workspaceChatCounts });
+    } catch (e) {
+      console.error(e.message, e);
+      response.sendStatus(500).end();
+    }
+  });
+
+  // Existing endpoints...
+  
 }
 
 module.exports = { apiWorkspaceEndpoints };
