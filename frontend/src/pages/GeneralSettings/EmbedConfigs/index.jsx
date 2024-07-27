@@ -11,10 +11,13 @@ import { useModal } from "@/hooks/useModal";
 import ModalWrapper from "@/components/ModalWrapper";
 import Embed from "@/models/embed";
 import CTAButton from "@/components/lib/CTAButton";
+import SearchBar from "@/components/SearchBar"; // Import the SearchBar component
 
 export default function EmbedConfigs() {
   const { isOpen, openModal, closeModal } = useModal();
   const { t } = useTranslation();
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+
   return (
     <div className="w-screen h-screen overflow-hidden bg-sidebar flex">
       <Sidebar />
@@ -39,7 +42,8 @@ export default function EmbedConfigs() {
               {t("embeddable.create")}
             </CTAButton>
           </div>
-          <EmbedContainer />
+          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} /> {/* Add the SearchBar component */}
+          <EmbedContainer searchQuery={searchQuery} /> {/* Pass searchQuery to EmbedContainer */}
         </div>
         <ModalWrapper isOpen={isOpen}>
           <NewEmbedModal closeModal={closeModal} />
@@ -49,18 +53,18 @@ export default function EmbedConfigs() {
   );
 }
 
-function EmbedContainer() {
+function EmbedContainer({ searchQuery }) {
   const [loading, setLoading] = useState(true);
   const [embeds, setEmbeds] = useState([]);
   const { t } = useTranslation();
 
   useEffect(() => {
-    async function fetchUsers() {
+    async function fetchEmbeds() {
       const _embeds = await Embed.embeds();
       setEmbeds(_embeds);
       setLoading(false);
     }
-    fetchUsers();
+    fetchEmbeds();
   }, []);
 
   if (loading) {
@@ -76,6 +80,10 @@ function EmbedContainer() {
       />
     );
   }
+
+  const filteredEmbeds = embeds.filter(embed =>
+    embed.workspace.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <table className="w-full text-sm text-left rounded-lg mt-6">
@@ -96,7 +104,7 @@ function EmbedContainer() {
         </tr>
       </thead>
       <tbody>
-        {embeds.map((embed) => (
+        {filteredEmbeds.map((embed) => (
           <EmbedRow key={embed.id} embed={embed} />
         ))}
       </tbody>
