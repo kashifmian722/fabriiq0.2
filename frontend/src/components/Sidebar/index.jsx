@@ -12,10 +12,25 @@ import SettingsButton from "../SettingsButton";
 import { Link } from "react-router-dom";
 import paths from "@/utils/paths";
 import { Plus, List, MagnifyingGlass } from "@phosphor-icons/react";
+function WorkspaceSearchBar({ searchQuery, setSearchQuery }) {
+  return (
+    <div className="relative mb-4">
+      <input
+        type="text"
+        className="w-full px-4 py-2 text-sm text-white bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Search workspaces..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <MagnifyingGlass className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+    </div>
+  );
+}
 export default function Sidebar() {
   const { user } = useUser();
   const { logo } = useLogo();
   const sidebarRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const {
     showing: showingNewWsModal,
     showModal: showNewWsModal,
@@ -43,6 +58,7 @@ export default function Sidebar() {
           <div className="flex-grow flex flex-col min-w-[235px]">
             <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between pt-[10px] overflow-y-scroll no-scroll">
               <div className="flex flex-col gap-y-2 pb-[60px] overflow-y-scroll no-scroll">
+              <WorkspaceSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                 <div className="flex gap-x-2 items-center justify-between">
                   {(!user || user?.role !== "default") && (
                     <button
@@ -56,7 +72,7 @@ export default function Sidebar() {
                     </button>
                   )}
                 </div>
-                <ActiveWorkspaces />
+                <ActiveWorkspaces searchQuery={searchQuery} />
               </div>
             </div>
             <div className="absolute bottom-0 left-0 right-0 pt-4 pb-3 rounded-b-[16px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
@@ -185,18 +201,4 @@ export function SidebarMobileHeader() {
       </div>
     </>
   );
-  function WorkspaceSearchBar({ searchQuery, setSearchQuery }) {
-  return (
-    <div className="relative mb-4">
-      <input
-        type="text"
-        className="w-full px-4 py-2 text-sm text-white bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Search workspaces..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <MagnifyingGlass className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-    </div>
-  );
-}
 }
