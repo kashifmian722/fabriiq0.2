@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Plus, List } from "@phosphor-icons/react";
+import { Plus, List, MagnifyingGlass } from "@phosphor-icons/react";
 import NewWorkspaceModal, {
   useNewWorkspaceModal,
 } from "../Modals/NewWorkspace";
@@ -11,7 +11,7 @@ import Footer from "../Footer";
 import SettingsButton from "../SettingsButton";
 import { Link } from "react-router-dom";
 import paths from "@/utils/paths";
-import { Plus, List, MagnifyingGlass } from "@phosphor-icons/react";
+
 function WorkspaceSearchBar({ searchQuery, setSearchQuery }) {
   return (
     <div className="relative mb-4">
@@ -26,6 +26,7 @@ function WorkspaceSearchBar({ searchQuery, setSearchQuery }) {
     </div>
   );
 }
+
 export default function Sidebar() {
   const { user } = useUser();
   const { logo } = useLogo();
@@ -58,7 +59,7 @@ export default function Sidebar() {
           <div className="flex-grow flex flex-col min-w-[235px]">
             <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between pt-[10px] overflow-y-scroll no-scroll">
               <div className="flex flex-col gap-y-2 pb-[60px] overflow-y-scroll no-scroll">
-              <WorkspaceSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                <WorkspaceSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                 <div className="flex gap-x-2 items-center justify-between">
                   {(!user || user?.role !== "default") && (
                     <button
@@ -188,7 +189,7 @@ export function SidebarMobileHeader() {
                       </button>
                     )}
                   </div>
-                  <ActiveWorkspaces />
+                  <ActiveWorkspaces searchQuery={searchQuery} />
                 </div>
               </div>
               <div className="z-99 absolute bottom-0 left-0 right-0 pt-2 pb-6 rounded-br-[26px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md">
