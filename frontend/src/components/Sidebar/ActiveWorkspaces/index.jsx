@@ -13,7 +13,7 @@ import useUser from "@/hooks/useUser";
 import ThreadContainer from "./ThreadContainer";
 import { Link, useMatch } from "react-router-dom";
 
-export default function ActiveWorkspaces() {
+export default function ActiveWorkspaces({ searchQuery }) {
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
   const [workspaces, setWorkspaces] = useState([]);
@@ -33,6 +33,7 @@ export default function ActiveWorkspaces() {
     }
     getWorkspaces();
   }, []);
+
   const handleMouseEnter = useCallback((workspaceId) => {
     setHoverStates((prev) => ({ ...prev, [workspaceId]: true }));
   }, []);
@@ -40,6 +41,7 @@ export default function ActiveWorkspaces() {
   const handleMouseLeave = useCallback((workspaceId) => {
     setHoverStates((prev) => ({ ...prev, [workspaceId]: false }));
   }, []);
+
   const handleGearMouseEnter = useCallback((workspaceId) => {
     setGearHover((prev) => ({ ...prev, [workspaceId]: true }));
   }, []);
@@ -71,9 +73,13 @@ export default function ActiveWorkspaces() {
     );
   }
 
+  const filteredWorkspaces = workspaces.filter(workspace =>
+    workspace.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div role="list" aria-label="Workspaces" className="flex flex-col gap-y-2">
-      {workspaces.map((workspace) => {
+      {filteredWorkspaces.map((workspace) => {
         const isActive = workspace.slug === slug;
         const isHovered = hoverStates[workspace.id];
         return (
