@@ -11,7 +11,6 @@ import Footer from "../Footer";
 import SettingsButton from "../SettingsButton";
 import { Link } from "react-router-dom";
 import paths from "@/utils/paths";
-import { Plus, List, MagnifyingGlass } from "@phosphor-icons/react";
 
 export default function Sidebar() {
   const { user } = useUser();
