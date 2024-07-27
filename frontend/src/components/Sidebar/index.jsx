@@ -12,10 +12,25 @@ import SettingsButton from "../SettingsButton";
 import { Link } from "react-router-dom";
 import paths from "@/utils/paths";
 
+function WorkspaceSearchBar({ searchQuery, setSearchQuery }) {
+  return (
+    <div className="relative mb-4">
+      <input
+        type="text"
+        placeholder="Search workspaces..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full py-2 pl-10 pr-4 text-sm text-white bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+    </div>
+  );
+}
 export default function Sidebar() {
   const { user } = useUser();
   const { logo } = useLogo();
   const sidebarRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const {
     showing: showingNewWsModal,
     showModal: showNewWsModal,
@@ -43,6 +58,7 @@ export default function Sidebar() {
           <div className="flex-grow flex flex-col min-w-[235px]">
             <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between pt-[10px] overflow-y-scroll no-scroll">
               <div className="flex flex-col gap-y-2 pb-[60px] overflow-y-scroll no-scroll">
+                <WorkspaceSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                 <div className="flex gap-x-2 items-center justify-between">
                   {(!user || user?.role !== "default") && (
                     <button
@@ -56,7 +72,7 @@ export default function Sidebar() {
                     </button>
                   )}
                 </div>
-                <ActiveWorkspaces />
+                <ActiveWorkspaces searchQuery={searchQuery} />
               </div>
             </div>
             <div className="absolute bottom-0 left-0 right-0 pt-4 pb-3 rounded-b-[16px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
@@ -75,6 +91,7 @@ export function SidebarMobileHeader() {
   const sidebarRef = useRef(null);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showBgOverlay, setShowBgOverlay] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const {
     showing: showingNewWsModal,
     showModal: showNewWsModal,
