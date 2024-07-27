@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import WorkspaceSearchBar from '../WorkspaceSearchBar';
 import Workspace from "@/models/workspace";
 import ManageWorkspace, {
   useManageWorkspaceModal,
@@ -17,6 +18,8 @@ export default function ActiveWorkspaces() {
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
   const [workspaces, setWorkspaces] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredWorkspaces, setFilteredWorkspaces] = useState([]);
   const [selectedWs, setSelectedWs] = useState(null);
   const [hoverStates, setHoverStates] = useState({});
   const [gearHover, setGearHover] = useState({});
@@ -30,9 +33,36 @@ export default function ActiveWorkspaces() {
       const workspaces = await Workspace.all();
       setLoading(false);
       setWorkspaces(workspaces);
+      setFilteredWorkspaces(workspaces);
     }
     getWorkspaces();
   }, []);
+   useEffect(() => {
+    const filtered = workspaces.filter(workspace => 
+      workspace.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredWorkspaces(filtered);
+  }, [searchQuery, workspaces]);
+
+  if (loading) {
+    return <div>Loading workspaces...</div>;
+  }
+
+  return (
+    <div role="list" aria-label="Workspaces" className="flex flex-col gap-y-2">
+      <WorkspaceSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      {filteredWorkspaces.length === 0 ? (
+        <div className="text-gray-500 text-sm">No workspaces found</div>
+      ) : (
+        filteredWorkspaces.map((workspace) => (
+          <WorkspaceItem key={workspace.id} workspace={workspace} />
+        ))
+      )}
+    </div>
+  );
+}
+
+function WorkspaceItem({ workspace }) {
   const handleMouseEnter = useCallback((workspaceId) => {
     setHoverStates((prev) => ({ ...prev, [workspaceId]: true }));
   }, []);
@@ -195,4 +225,5 @@ export default function ActiveWorkspaces() {
       )}
     </div>
   );
+}
 }
