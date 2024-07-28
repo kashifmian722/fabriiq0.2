@@ -26,14 +26,25 @@ export function enforceSubmissionSchema(form) {
 export default function NewEmbedModal({ closeModal }) {
   const [error, setError] = useState(null);
 
+  const generateEmbedScript = (workspace) => {
+    const script = document.createElement('script');
+    script.setAttribute('data-embed-id', '5fc05aaf-2f2c-4c84-87a3-367a4692c1ee');
+    script.setAttribute('data-base-api-url', 'http://localhost:3001/api/embed');
+    script.setAttribute('data-assistant-icon', workspace.pfpUrl || 'default-icon-url');
+    script.src = 'http://localhost:3000/embed/anythingllm-chat-widget.min.js';
+    document.body.appendChild(script);
+  };
   const handleCreate = async (e) => {
     setError(null);
     e.preventDefault();
     const form = new FormData(e.target);
     const data = enforceSubmissionSchema(form);
     const { embed, error } = await Embed.newEmbed(data);
-    if (!!embed) window.location.reload();
-    setError(error);
+    if (!!embed) {
+      const workspace = await Workspace.bySlug(data.workspace_id);
+      generateEmbedScript(workspace);
+      window.location.reload();
+    }    setError(error);
   };
 
   return (
