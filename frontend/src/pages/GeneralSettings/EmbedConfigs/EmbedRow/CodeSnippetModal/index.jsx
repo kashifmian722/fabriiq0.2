@@ -50,6 +50,7 @@ Paste this script at the bottom of your HTML before the </body> tag.
 <script
   data-embed-id="${embed.uuid}"
   data-base-api-url="${serverHost}/api/embed"
+  data-assistant-icon="${embed.workspace.pfpUrl || 'default-icon-url'}"
   src="${scriptHost}/embed/fabriiq-chat-widget.min.js">
 </script>
 <!-- FabriiQ (https://fabriiq.com) -->
