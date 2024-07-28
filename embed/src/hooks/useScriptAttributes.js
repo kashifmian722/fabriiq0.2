@@ -49,9 +49,29 @@ export default function useGetScriptAttributes() {
           "[FabriiQ Embed Module::Abort] - Invalid script tag setup detected. Missing required parameters for boot!"
         );
 
+      const scriptTag = document.currentScript;
+      const customSettings = {
+        chatIcon: scriptTag.getAttribute('data-chat-icon') || DEFAULT_SETTINGS.chatIcon,
+        buttonColor: scriptTag.getAttribute('data-button-color') || DEFAULT_SETTINGS.buttonColor,
+        userBgColor: scriptTag.getAttribute('data-user-bg-color') || DEFAULT_SETTINGS.userBgColor,
+        assistantBgColor: scriptTag.getAttribute('data-assistant-bg-color') || DEFAULT_SETTINGS.assistantBgColor,
+        brandImageUrl: scriptTag.getAttribute('data-brand-image-url') || DEFAULT_SETTINGS.brandImageUrl,
+        greeting: scriptTag.getAttribute('data-greeting') || DEFAULT_SETTINGS.greeting,
+        noSponsor: scriptTag.hasAttribute('data-no-sponsor'),
+        sponsorLink: scriptTag.getAttribute('data-sponsor-link') || DEFAULT_SETTINGS.sponsorLink,
+        sponsorText: scriptTag.getAttribute('data-sponsor-text') || DEFAULT_SETTINGS.sponsorText,
+        position: scriptTag.getAttribute('data-position') || DEFAULT_SETTINGS.position,
+        assistantName: scriptTag.getAttribute('data-assistant-name') || DEFAULT_SETTINGS.assistantName,
+        assistantIcon: scriptTag.getAttribute('data-assistant-icon') || DEFAULT_SETTINGS.assistantIcon,
+        windowHeight: scriptTag.getAttribute('data-window-height') || DEFAULT_SETTINGS.windowHeight,
+        windowWidth: scriptTag.getAttribute('data-window-width') || DEFAULT_SETTINGS.windowWidth,
+        textSize: scriptTag.getAttribute('data-text-size') || DEFAULT_SETTINGS.textSize,
+      };
+
       setSettings({
         ...DEFAULT_SETTINGS,
         ...embedderSettings.settings,
+        ...customSettings,
         loaded: true,
       });
     }
