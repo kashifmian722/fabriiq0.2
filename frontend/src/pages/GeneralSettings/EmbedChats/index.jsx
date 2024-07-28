@@ -7,12 +7,10 @@ import useQuery from "@/hooks/useQuery";
 import ChatRow from "./ChatRow";
 import Embed from "@/models/embed";
 import { useTranslation } from "react-i18next";
-import SearchBar from "@/components/SearchBar"; // Import the SearchBar component
 
 export default function EmbedChats() {
+  // TODO [FEAT]: Add export of embed chats
   const { t } = useTranslation();
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-
   return (
     <div className="w-screen h-screen overflow-hidden bg-sidebar flex">
       <Sidebar />
@@ -31,15 +29,14 @@ export default function EmbedChats() {
               {t("embed-chats.description")}
             </p>
           </div>
-          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} /> {/* Add the SearchBar component */}
-          <ChatsContainer searchQuery={searchQuery} /> {/* Pass searchQuery to ChatsContainer */}
+          <ChatsContainer />
         </div>
       </div>
     </div>
   );
 }
 
-function ChatsContainer({ searchQuery }) {
+function ChatsContainer() {
   const query = useQuery();
   const [loading, setLoading] = useState(true);
   const [chats, setChats] = useState([]);
@@ -82,10 +79,6 @@ function ChatsContainer({ searchQuery }) {
     );
   }
 
-  const filteredChats = chats.filter(chat =>
-    chat.workspace.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
     <>
       <table className="w-full text-sm text-left rounded-lg mt-5">
@@ -112,8 +105,8 @@ function ChatsContainer({ searchQuery }) {
           </tr>
         </thead>
         <tbody>
-          {!!filteredChats &&
-            filteredChats.map((chat) => (
+          {!!chats &&
+            chats.map((chat) => (
               <ChatRow key={chat.id} chat={chat} onDelete={handleDeleteChat} />
             ))}
         </tbody>
